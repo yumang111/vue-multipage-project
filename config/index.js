@@ -1,10 +1,10 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 var path = require('path')
 
+
 module.exports = {
   build: {
     env: require('./prod.env'),
-    index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -34,5 +34,16 @@ module.exports = {
     // In our experience, they generally work as expected,
     // just be aware of this issue when enabling this option.
     cssSourceMap: false
+  },
+  prod:{
+    env:require('./prod.env'),
+    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsSubDirectory: 'static2',
+    assetsPublicPath: 'http://static.fdc.com.cn/',
+    productionSourceMap: false,
+    productionGzip: false,
+    productionGzipExtensions: ['js'],
+    bundleAnalyzerReport: process.env.npm_config_report
   }
+
 }

@@ -1,15 +1,16 @@
 var path = require('path')
 var config = require('../config')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var envConfig = config[process.env.npm_lifecycle_event]
 
 exports.assetsPath = function(_path) {
-  var assetsSubDirectory =
-    process.env.NODE_ENV === 'production'
-      ? config.build.assetsSubDirectory
-      : config.dev.assetsSubDirectory
+  var assetsSubDirectory = envConfig.assetsSubDirectory
   return path.posix.join(assetsSubDirectory, _path)
 }
-
+exports.publicPath = function (_path) {
+  var assetsPublicPath = envConfig.assetsPublicPath
+  return path.posix.join(assetsPublicPath, _path)
+}
 exports.cssLoaders = function(options) {
   options = options || {}
 
@@ -63,6 +64,9 @@ exports.styleLoaders = function(options) {
   var loaders = exports.cssLoaders(options)
   for (var extension in loaders) {
     var loader = loaders[extension]
+    loader.splice(options.extract ? 3 : 2, 0, {
+      loader: 'postcss-loader'
+    })
     output.push({
       test: new RegExp('\\.' + extension + '$'),
       use: loader
@@ -110,7 +114,7 @@ exports.htmlPlugin = function() {
       // 模板来源
       template: filePath,
       // 文件名称
-      filename: filename + '.html',
+      filename: `WEB-INF/template/${filename}/${filename}.html`,
       // 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
       // chunks: ['manifest', 'vendor', filename],
       chunks: [filename],

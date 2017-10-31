@@ -2,7 +2,7 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
-
+var envConfig = config[process.env.npm_lifecycle_event]
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
@@ -10,12 +10,9 @@ function resolve(dir) {
 module.exports = {
   entry: utils.entries(),
   output: {
-    path: config.build.assetsRoot,
+    path: envConfig.assetsRoot,
     filename: '[name].js',
-    publicPath:
-      process.env.NODE_ENV === 'production'
-        ? config.build.assetsPublicPath
-        : config.dev.assetsPublicPath
+    publicPath:envConfig.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
